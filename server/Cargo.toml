@@ -1,0 +1,13 @@
+[package]
+name = "server"
+version = "0.1.0"
+authors = ["Ben Mitchell <dezyh@outlook.com>"]
+edition = "2018"
+
+[dependencies]
+tokio = { version = "0.2", features = ["full"] }
+rocket = "0.4.5"
+rusoto_core = "0.44.0"
+rusoto_s3 = "0.44.0"
+rusoto_dynamodb = "0.44.0"
+rusoto_credential = "0.44.0"

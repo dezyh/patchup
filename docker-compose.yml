@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+
+  client:
+    build: ./client
+    volumes:
+        - ./client:/patchup/client
+        - /patchup/client/node_modules
+    ports:
+        - "3000:3000"
+    stdin_open: true
+    container_name: patchup-client
+
+  server:
+    build: ./server
+    volumes:
+        - ./server:/patchup/server
+    ports:
+        - "8000:8000"
+    container_name: patchup-server
