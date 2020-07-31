@@ -8,13 +8,17 @@
 An open source service to reduce the overall installation time of large software updates. This is achieved through the efficient computation of binary patches between software versions and fast, low-latency delivery of patches using a content delivery network. 
 
 ## System Architecture
-- JavaScript + [React](https://reactjs.org) frontend client
-- Rust + [Rocket](https://rocket.rs) api server
-- Rust + [bidiff](https://github.com/divvun/bidiff) patch microservice
-- [PostgreSQL](https://www.postgresql.org) + [Diesel](https://github.com/diesel-rs/diesel) database
+#### Client
+React single page app using Redux for state management. Deployed on AWS S3 for efficient distribution.
+#### Server
+Express server using Mongoose as the database query engine. Deployed on AWS EC2.  
+#### Database
+MongoDB replica of 3 nodes. Deployed on AWS EC2.
+#### Service
+Patching service in Rust using the bidiff crate. Deployed on AWS Fargate with automatic horizontal scaling.
 
 ## Development
-To start a development server with hot-reloading
+To start a local development server, client and database with hot-reloading,
 ```
 docker-compose up -d
 ```

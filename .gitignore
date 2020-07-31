@@ -1,3 +1,6 @@
+# ignore local development database
+database/
+
 # ignore all public and private keys
 *.key
 *.pem

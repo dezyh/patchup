@@ -5,11 +5,44 @@ services:
   client:
     build: ./client
     volumes:
-        - ./client:/patchup/client
-        - /patchup/client/node_modules
+      - ./client:/patchup/client
+      - /patchup/client/node_modules
     ports:
-        - "3000:3000"
+      - 3000:3000
     stdin_open: true
     container_name: patchup-client
-    links:
-      - server
+
+  server:
+    build: ./server
+    volumes:
+      - ./server:/patchup/server
+      - /patchup/server/node_modules
+    environment:
+      - MONGO_HOST=patchup-database
+      - MONGO_PORT=27107
+      - NODE_ENV=development
+    ports:
+      - 8080:8080
+    stdin_open: true
+    container_name: patchup-server
+    networks:
+      - patchup-network
+
+  database:
+    image: mongo:latest
+    environment:
+      - MONGO_DATA_DIR=/database
+      - MONGO_LOG_DIR=/dev/null
+    volumes: 
+      - ./database:/database
+    ports: 
+      - 27017:27107
+    container_name: patchup-database
+    logging:
+      driver: none
+    networks:
+      - patchup-network
+
+networks:
+  patchup-network:
+    driver: bridge
