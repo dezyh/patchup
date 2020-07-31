@@ -1,32 +1,3 @@
-# ----- Rust Server -----
- 
-# compiled files
-server/*.o
-server/*.so
-server/*.rlib
-server/*.dll
-
-# cargo
-server/target
-server/Cargo.lock
-
-# ----- React Client -----
-
-# dependencies
-client/node_modules
-client/.pnp
-client/.pnp.js
-
-# testing
-client/coverage
-
-# production
-client/build
-
-# misc
-*/.DS_Store
-*/.env*
-
-client/npm-debug.log*
-client/yarn-debug.log*
-client/yarn-error.log*
+# ignore all public and private keys
+*.key
+*.pem
