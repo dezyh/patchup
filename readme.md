@@ -20,7 +20,11 @@ Patching service in Rust using the bidiff crate. Deployed on AWS Fargate with au
 ## Development
 To start a local development server, client and database with hot-reloading,
 ```
-docker-compose up -d
+docker-compose up -d --build
+```
+To stop the local development server (required if installing modules),
+```
+docker-compose down -v
 ```
 
 ## Contributing
