@@ -11,9 +11,6 @@ crash.log
 # exclude .tfvars files, which are likely to contain sensitive data
 *.tfvars
 
-# allow example .tfvars
-!example.tfvars
-
 # ignore override files as they are usually used to override resources locally
 override.tf
 override.tf.json
