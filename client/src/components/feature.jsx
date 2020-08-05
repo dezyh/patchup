@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SellingPoint = ({title, description, logo}) => {
+const Feature = ({title, description, logo}) => {
   const classes = useStyles();
   return (
     <Grid item>
@@ -29,4 +29,4 @@ const SellingPoint = ({title, description, logo}) => {
   );
 };
 
-export default SellingPoint;
+export default Feature;

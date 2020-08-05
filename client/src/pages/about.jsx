@@ -8,7 +8,7 @@ import OctopusLogo from '../assets/OctopusLogo';
 import SpeedLogo from '../assets/SpeedLogo';
 import DeliveryLogo from '../assets/DeliveryLogo';
 import Divider from '@material-ui/core/Divider';
-import SellingPoint from './SellingPoint';
+import Feature from '../components/feature';
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -71,12 +71,12 @@ const About = () => {
 
           <Container maxWidth='md'>
             <Grid container direction='row' justify='center' spacing={5}>
-              <SellingPoint 
+              <Feature 
                 title='Speed' 
                 description='We use a content delivery network to deliver patches as fast as possible, not matter where youre located.'
                 logo={<SpeedLogo height={80} width={80} centered={true}/>}
               />
-              <SellingPoint 
+              <Feature 
                 title='Delivery' 
                 description='We use optimized algorithms and high performance servers to efficiently calculate your patches.'
                 logo={<DeliveryLogo height={80} width={80} centered={true}/>}

@@ -11,6 +11,8 @@ services:
       - 3000:3000
     stdin_open: true
     container_name: patchup-client
+    networks:
+      - patchup-network
 
   server:
     build: ./server
