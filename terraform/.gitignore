@@ -1,17 +1,19 @@
-# ignore terraform directory
-.terraform
+# ignore private terraform variables
+*.tfvars
 
-# ignore .tfstate files
+# ignore all public and private keys
+*.key
+*.pem
+
+# ignore terraform state
+*.terraform
 *.tfstate
 *.tfstate.*
 
-# ignore crash log files
+# ignore crash logs
 crash.log
 
-# exclude .tfvars files, which are likely to contain sensitive data
-*.tfvars
-
-# ignore override files as they are usually used to override resources locally
+# ignore override files
 override.tf
 override.tf.json
 *_override.tf

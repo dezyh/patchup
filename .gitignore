@@ -1,6 +1,5 @@
 # ignore local development database
-database/
+.database
 
-# ignore all public and private keys
-*.key
-*.pem
+# ignore local development aws infrastructure
+.localstack
