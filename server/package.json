@@ -9,6 +9,7 @@
   "author": "Dezyh",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.734.0",
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
