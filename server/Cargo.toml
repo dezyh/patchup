@@ -1,0 +1,24 @@
+[package]
+name = "patchup-server"
+version = "0.1.0"
+authors = ["SakaDream <bahaimt@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+dotenv = "0.15"
+
+actix-web = "2.0"
+actix-rt = "1.1"
+
+log = "0.4"
+env_logger = "0.7"
+
+r2d2 = "0.8"
+diesel = { version = "1.4", features = ["postgres", "uuidv07", "r2d2", "chrono"] }
+diesel_migrations = "1.4"
+
+serde = { version = "1.0", features = ["derive"] }
+
+chrono = { version = "0.4", features = ["serde"] }
+
+argonautica = "0.2"

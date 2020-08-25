@@ -1,63 +1,63 @@
-version: "3"
+version: '3'
 
 services:
 
   client:
-    build: ./client
+    image: node:13.12.0-alpine
+    command: sh -c 'npm install --silent && npm start'
     volumes:
-      - ./client:/patchup/client
-      - /patchup/client/node_modules
+        - ./client:/client:cached
     ports:
-      - 3000:3000
+        - 3000:3000
     stdin_open: true
+    working_dir: /client
     container_name: patchup-client
     networks:
-      - patchup-network
+      - patchup-network   
 
   server:
     build: ./server
+    command: sh -c 'cargo watch -x run'
     volumes:
-      - ./server:/patchup/server
-      - /patchup/server/node_modules
-    environment:
-      - MONGO_HOST=patchup-database
-      - MONGO_PORT=27107
-      - NODE_ENV=development
+        - ./server:/server:cached
     ports:
-      - 8080:8080
-    stdin_open: true
+        - 8000:8000
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@database:5432/postgres
     container_name: patchup-server
+    working_dir: /server
     networks:
       - patchup-network
 
   database:
-    image: mongo:latest
+    image: 'postgres:13-alpine'
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.database:/var/lib/postgresql/data/pgdata
     environment:
-      - MONGO_DATA_DIR=/database
-      - MONGO_LOG_DIR=/dev/null
-    volumes: 
-      - ./.database:/database
-    ports: 
-      - 27017:27107
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
     container_name: patchup-database
-    logging:
-      driver: none
     networks:
       - patchup-network
 
-  localstack:
-    image: localstack/localstack:latest
-    container_name: localstack
-    ports:
+  aws:
+    image: 'localstack/localstack:latest'
+    ports: 
       - 4563-4584:4563-4584
-      - 8055:8080
     environment:
       - SERVICES=s3
       - DEBUG=1
       - DATA_DIR=/tmp/localstack/data
+      - EXTRA_CORS_ALLOWED_HEADERS=access-control-allow-headers,content-disposition
     volumes:
-      - ./.localstack:/tmp/localstack
+      - ./.aws:/tmp/localstack
       - /var/run/docker.sock:/var/run/docker.sock
+    container_name: patchup-aws
+    networks:
+      - patchup-network
 
 networks:
   patchup-network:

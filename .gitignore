@@ -2,4 +2,13 @@
 .database
 
 # ignore local development aws infrastructure
-.localstack
+.aws
+
+# ignore local env variables
+.env
+
+# ignore ide
+.vscode
+
+# ignore mac
+.DS_Store
