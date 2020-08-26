@@ -21,7 +21,6 @@ jobs:
       working-directory: client
 
     - uses: jakejarvis/s3-sync-action@master
-      working-directory: client
       with:
         args: --acl public-read --delete
       env:
