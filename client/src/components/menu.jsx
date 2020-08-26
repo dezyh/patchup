@@ -98,6 +98,29 @@ const DrawerItem = ({text, icon, url}) => {
 const Menu = (props) => {
   const classes = useStyles();
   const theme = useTheme();
+
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar 
+        position="fixed" 
+        className={classes.appBar} 
+      >
+        <Toolbar>
+          <Typography variant="h6" noWrap>Patchup</Typography>
+        </Toolbar>
+      </AppBar>
+      <div className={classes.content}>
+        <div className={classes.toolbar} />
+        {props.children}
+      </div>
+    </div>
+  );
+}
+
+const MenuAuth = (props) => {
+  const classes = useStyles();
+  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -160,4 +183,4 @@ const Menu = (props) => {
   );
 }
 
-export default Menu;
+export { MenuAuth, Menu };
