@@ -11,9 +11,9 @@ An open source service to reduce the overall installation time of large software
 #### Client
 React single page app using Redux for state management. Deployed on AWS S3 for efficient distribution.
 #### Server
-Express server using Mongoose as the database query engine. Deployed on AWS EC2.  
+Actix-Web server with Diesel as the ORM for a PostgreSQL database. Deployed on AWS EC2.  
 #### Database
-MongoDB replica of 3 nodes. Deployed on AWS EC2.
+PostgreSQL deployed on AWS EC2.
 #### Service
 Patching service in Rust using the bidiff crate. Deployed on AWS Fargate with automatic horizontal scaling.
 
