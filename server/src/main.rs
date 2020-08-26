@@ -1,4 +1,5 @@
-#[warn(unused_must_use)]
+#![allow(dead_code)]
+
 #[macro_use]
 extern crate actix_web;
 #[macro_use]
@@ -7,14 +8,22 @@ extern crate diesel;
 extern crate diesel_migrations;
 #[macro_use]
 extern crate log;
+#[macro_use]
+extern crate serde_json;
+
+extern crate uuid;
+extern crate jsonwebtoken;
 
 use actix_web::{middleware::Logger, App, HttpServer};
 use std::{env, io};
 
+mod error;
 mod config;
-mod controllers;
+mod routes;
 mod models;
 mod schema;
+mod services;
+mod constants;
 
 #[actix_rt::main]
 async fn main() -> io::Result<()> {
