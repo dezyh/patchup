@@ -3,7 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
 import { Typography } from '@material-ui/core';
 
-const Upload = () => {
+const Uploader = () => {
   
   const handleFinishedUpload = (info) => {
     console.log(info);
@@ -31,6 +31,12 @@ const Upload = () => {
       />
     </React.Fragment>
   );
+}
+
+const Upload = () => {
+    return (
+        <Uploader />
+    );
 }
 
 export default Upload;

@@ -15,12 +15,19 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import SettingsIcon from '@material-ui/icons/Settings';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import TimelineIcon from '@material-ui/icons/Timeline';
+import AddIcon from '@material-ui/icons/Add';
+import AppsIcon from '@material-ui/icons/Apps';
+import { Link } from 'react-router-dom';
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+      display: 'flex',
+  },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
@@ -76,11 +83,19 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
   },
 }));
 
-export default function Menu() {
+const DrawerItem = ({text, icon, url}) => {
+    return (
+        <ListItem button key={text} to={url} component={Link}>
+            <ListItemIcon>{icon}</ListItemIcon>
+            <ListItemText primary={text} />
+        </ListItem>
+    );
+}
+
+const Menu = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -94,13 +109,11 @@ export default function Menu() {
   };
 
   return (
-    <React.Fragment>
+    <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
+      <AppBar 
+        position="fixed" 
+        className={clsx(classes.appBar, { [classes.appBarShift]: open, })} 
       >
         <Toolbar>
           <IconButton
@@ -108,54 +121,43 @@ export default function Menu() {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open,
-            })}
+            className={clsx(classes.menuButton, { [classes.hide]: open, })}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            Mini variant drawer!
-          </Typography>
+          <Typography variant="h6" noWrap>Patchup</Typography>
         </Toolbar>
       </AppBar>
       <Drawer
         variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          }),
-        }}
+        className={clsx(classes.drawer, { [classes.drawerOpen]: open, [classes.drawerClose]: !open, })}
+        classes={{ paper: clsx({ [classes.drawerOpen]: open, [classes.drawerClose]: !open, }), }}
       >
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </div>
-        <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+            <DrawerItem text='Dashboard' url='/dashboard' icon={<DashboardIcon/>} />
         </List>
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+            <DrawerItem text='Project' url='/project' icon={<AppsIcon/>} />
+            <DrawerItem text='Update' url='/update' icon={<AddIcon/>} />
+            <DrawerItem text='Analytics' url='/analytics' icon={<TimelineIcon/>} />
+        </List>
+        <Divider />
+        <List>
+            <DrawerItem text='Settings' url='/settings' icon={<SettingsIcon/>} />
         </List>
       </Drawer>
-    </React.Fragment>
+      <div className={classes.content}>
+        <div className={classes.toolbar} />
+        {props.children}
+      </div>
+    </div>
   );
 }
+
+export default Menu;
