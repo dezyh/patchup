@@ -12,16 +12,16 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       
-    - name: Move to client directory
-      run: cd client
-      
     - name: Install react client modules
       run: npm install
+      working-directory: client
       
     - name: Build react client for production
       run: npm run build
+      working-directory: client
 
     - uses: jakejarvis/s3-sync-action@master
+      working-directory: client
       with:
         args: --acl public-read --delete
       env:
