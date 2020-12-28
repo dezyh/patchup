@@ -19,7 +19,7 @@ use std::{env, io};
 
 mod error;
 mod config;
-mod routes;
+mod handlers;
 mod models;
 mod schema;
 mod services;
