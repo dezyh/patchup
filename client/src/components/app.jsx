@@ -1,27 +1,15 @@
 import React from 'react';
 import Main from './main';
 import Footer from './footer';
-import { Menu, MenuAuth } from './menu';
+import { Nav } from './nav';
 
 const App = () => {
-
-  const auth = { token: null };
-
-  if (auth.token) {
-    return (
-      <MenuAuth>
-        <Main />
-        <Footer />
-      </MenuAuth>
-    );
-  } else {
-    return (
-      <Menu>
-        <Main />
-        <Footer />
-      </Menu>
-    );
-  }
+  return (
+    <Nav>
+      <Main />
+      <Footer />
+    </Nav>
+  );
 }
 
 export default App;
