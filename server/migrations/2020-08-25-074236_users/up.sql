@@ -1,9 +1,10 @@
 create table users (
-    username varchar(20) not null unique primary key,
-    email varchar(100) not null unique,
-    passhash varchar(200) not null,
-    firstname varchar(30),
-    lastname varchar(30),
-    verified boolean default true,
-    created_at timestamp not null
+    id serial primary key,
+    username varchar(20) not null unique,
+    email varchar(100) not null,
+    password varchar(200) not null,
+    firstname varchar(30) not null,
+    lastname varchar(30) not null,
+    verified boolean default true not null,
+    session varchar(200) not null default ''
 );

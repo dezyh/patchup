@@ -8,7 +8,7 @@ pub fn hash_password(password: &str) -> String {
         .unwrap()
 }
 
-pub fn verify_hash(hash: &str, password: &str) -> bool {
+pub fn verify_password(hash: &str, password: &str) -> bool {
     Verifier::default()
         .with_hash(hash)
         .with_password(password)

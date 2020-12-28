@@ -1,11 +1,12 @@
 table! {
-    users (username) {
+    users (id) {
+        id -> Int4,
         username -> Varchar,
         email -> Varchar,
-        passhash -> Varchar,
+        password -> Varchar,
         firstname -> Varchar,
         lastname -> Varchar,
         verified -> Bool,
-        created_at -> Timestamp,
+        session -> Varchar,
     }
 }
