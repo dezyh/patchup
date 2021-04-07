@@ -7,6 +7,8 @@ import { Router } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import history from './services/history';
 import darkTheme from './themes/dark';
+import CssBaseline from '@material-ui/core/CssBaseline';
+
 
 window.store = store;
 
@@ -14,7 +16,9 @@ render (
   <Provider store={store}>
     <ThemeProvider theme={darkTheme}>
       <Router history={history}>
-        <App />
+        <CssBaseline>
+          <App />
+        </CssBaseline>
       </Router>
     </ThemeProvider>
   </Provider>,

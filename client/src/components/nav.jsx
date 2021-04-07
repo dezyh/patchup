@@ -37,7 +37,7 @@ const Nav = () => {
     //const classes = useStyles();
 
   return (
-    <AppBar position='fixed'>
+    <AppBar position='flex'>
       <Toolbar>
         <Typography variant='h6'>
           Patchup

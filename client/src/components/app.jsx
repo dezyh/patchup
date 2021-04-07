@@ -5,10 +5,11 @@ import { Nav } from './nav';
 
 const App = () => {
   return (
-    <Nav>
+    <div>
+      <Nav />  
       <Main />
       <Footer />
-    </Nav>
+    </div>        
   );
 }
 
