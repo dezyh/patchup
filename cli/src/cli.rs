@@ -23,6 +23,10 @@ impl Cli {
                 let patch = DirPatch::from_file(args.patch);
                 patch.apply(&args.source);
             }
+            Command::Plan(args) => {
+                let plan = DirPlan::new(args.source, args.target);
+                plan.print();
+            }
         }
     }
 }
@@ -32,6 +36,17 @@ impl Cli {
 enum Command {
     Diff(Diff),
     Patch(Patch),
+    Plan(Plan),
+}
+
+/// Calculate a plan for diffing two directories
+#[derive(FromArgs, PartialEq, Debug)]
+#[argh(subcommand, name = "plan")]
+struct Plan {
+    #[argh(positional)]
+    source: String,
+    #[argh(positional)]
+    target: String,
 }
 
 /// Write the diff of two directories to a patch file
