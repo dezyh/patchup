@@ -1,10 +1,10 @@
-use std::fs;
 use crate::diff::diff as do_diff;
 use crate::diff::patch as do_patch;
 use crate::plan::Plan;
-use std::io::{Read, Write};
+use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
+use std::fs;
 use std::fs::File;
-use byteorder::{ReadBytesExt, WriteBytesExt, LittleEndian};
+use std::io::{Read, Write};
 
 struct FileAdd {
     path: String,
@@ -12,21 +12,19 @@ struct FileAdd {
 }
 
 impl FileAdd {
-
     fn new(base: &String, path: String) -> FileAdd {
         let data = fs::read(format!("{}/{}", &base, &path)).unwrap();
-        FileAdd {
-            path,
-            data,
-        }
+        FileAdd { path, data }
     }
 
     fn write_to_file(&self, file: &mut File) {
         // Write path size and then path
-        file.write_u64::<LittleEndian>(self.path.len() as u64).unwrap();
+        file.write_u64::<LittleEndian>(self.path.len() as u64)
+            .unwrap();
         file.write(self.path.as_bytes()).unwrap();
         // Write data size and then data
-        file.write_u64::<LittleEndian>(self.data.len() as u64).unwrap();
+        file.write_u64::<LittleEndian>(self.data.len() as u64)
+            .unwrap();
         file.write(&self.data).unwrap();
     }
 
@@ -40,11 +38,8 @@ impl FileAdd {
         let data_size = file.read_u64::<LittleEndian>().unwrap();
         let mut data = vec![0u8; data_size as usize];
         file.read_exact(&mut data).unwrap();
-       
-        FileAdd {
-            path,
-            data,
-        }
+
+        FileAdd { path, data }
     }
 }
 
@@ -53,16 +48,14 @@ struct FileDel {
 }
 
 impl FileDel {
-
     fn new(path: String) -> FileDel {
-        FileDel {
-            path
-        }
+        FileDel { path }
     }
 
     fn write_to_file(&self, file: &mut File) {
         // Write path size and then path
-        file.write_u64::<LittleEndian>(self.path.len() as u64).unwrap();
+        file.write_u64::<LittleEndian>(self.path.len() as u64)
+            .unwrap();
         file.write(self.path.as_bytes()).unwrap();
     }
 
@@ -72,9 +65,7 @@ impl FileDel {
         let mut path = String::new();
         file.take(path_size).read_to_string(&mut path).unwrap();
 
-        FileDel {
-            path
-        }
+        FileDel { path }
     }
 }
 
@@ -85,24 +76,18 @@ struct FilePatch {
 }
 
 impl FilePatch {
-
-    fn calculate(file: String, source: &String, target: &String) -> FilePatch { 
+    fn calculate(file: String, source: &String, target: &String) -> FilePatch {
         // Read source and target file contents as bytes
         let source_contents = fs::read(format!("{}/{}", source, file)).unwrap();
         let target_contents = fs::read(format!("{}/{}", target, file)).unwrap();
         // Calculate the patch diff
         let (patch, size) = do_diff(source_contents, target_contents);
         // Return patch
-        FilePatch {
-            file,
-            patch,
-            size
-        }
+        FilePatch { file, patch, size }
     }
 
     fn write_to_file(&self, file: &mut File) {
-
-        // Calculate some sizes to allow reading from file 
+        // Calculate some sizes to allow reading from file
         let file_size = self.file.len();
         let patch_size = self.patch.len();
         let decom_patch_size = self.size;
@@ -115,7 +100,8 @@ impl FilePatch {
         // Write the patch size
         file.write_u64::<LittleEndian>(patch_size as u64).unwrap();
         // Write the decompressed patch size
-        file.write_u64::<LittleEndian>(decom_patch_size as u64).unwrap();
+        file.write_u64::<LittleEndian>(decom_patch_size as u64)
+            .unwrap();
         // Write the patch data
         file.write(&self.patch).unwrap();
     }
@@ -125,8 +111,10 @@ impl FilePatch {
         let file_path_size = file.read_u64::<LittleEndian>().unwrap();
         // Read file path
         let mut file_path = String::new();
-        file.take(file_path_size).read_to_string(&mut file_path).unwrap();
-        
+        file.take(file_path_size)
+            .read_to_string(&mut file_path)
+            .unwrap();
+
         // Read patch size
         let patch_size = file.read_u64::<LittleEndian>().unwrap();
         // Read decompressed patch size
@@ -150,7 +138,6 @@ pub struct Patch {
 }
 
 impl Patch {
-
     // Create a new directory patch
     fn new() -> Patch {
         let patches = Vec::new();
@@ -171,10 +158,10 @@ impl Patch {
     // Create a directory patch from a plan
     pub fn from_plan(plan: Plan) -> Patch {
         let mut patch = Patch::new();
-        
+
         // Add the patch for each file in the directory
         for file in plan.mutuals {
-            let file_patch = FilePatch::calculate(file.path, &plan.source, &plan.target);            
+            let file_patch = FilePatch::calculate(file.path, &plan.source, &plan.target);
             patch.add(file_patch);
         }
 
@@ -183,7 +170,9 @@ impl Patch {
         }
 
         for addition in plan.additions {
-            patch.additions.push(FileAdd::new(&plan.target, addition.path));
+            patch
+                .additions
+                .push(FileAdd::new(&plan.target, addition.path));
         }
 
         // Return patch
@@ -218,22 +207,6 @@ impl Patch {
         self.apply_deletions(dir);
         self.apply_additions(dir);
     }
-    
-    pub fn write_to_file(&self, name: &String) {
-        
-        // Create a new file to write patch to
-        let mut file = File::create(name).unwrap();
-        
-        // Write the number of patches to the patch file
-        file.write_u64::<LittleEndian>(self.patches.len() as u64).unwrap();
-        
-        // Write each file patch to the patch file 
-        for file_patch in &self.patches {
-
-            file_patch.write_to_file(&mut file);
-            
-        }
-    }
 
     fn read_patches(&mut self, file: &mut File) {
         let patches = file.read_u64::<LittleEndian>().unwrap();
@@ -258,7 +231,7 @@ impl Patch {
 
     pub fn from_file(file: String) -> Patch {
         let mut patch = Patch::new();
-        let mut file = File::open(file).unwrap(); 
+        let mut file = File::open(file).unwrap();
         patch.read_patches(&mut file);
         patch.read_additions(&mut file);
         patch.read_deletions(&mut file);
@@ -266,21 +239,24 @@ impl Patch {
     }
 
     fn write_patches(&self, file: &mut File) {
-        file.write_u64::<LittleEndian>(self.patches.len() as u64).unwrap();
+        file.write_u64::<LittleEndian>(self.patches.len() as u64)
+            .unwrap();
         for patch in &self.patches {
             patch.write_to_file(file);
         }
     }
 
     fn write_additions(&self, file: &mut File) {
-        file.write_u64::<LittleEndian>(self.additions.len() as u64).unwrap();
+        file.write_u64::<LittleEndian>(self.additions.len() as u64)
+            .unwrap();
         for addition in &self.additions {
             addition.write_to_file(file);
         }
     }
 
     fn write_deletions(&self, file: &mut File) {
-        file.write_u64::<LittleEndian>(self.deletions.len() as u64).unwrap();
+        file.write_u64::<LittleEndian>(self.deletions.len() as u64)
+            .unwrap();
         for deletion in &self.deletions {
             deletion.write_to_file(file);
         }
@@ -292,5 +268,4 @@ impl Patch {
         self.write_additions(&mut file);
         self.write_deletions(&mut file);
     }
-
 }

@@ -10,19 +10,20 @@ pub struct Plan {
 }
 
 impl Plan {
-
     // Calculate the intersection of source files and target files in place, moving the intersection into a new hashset
-    fn mutual_files(source_files: &mut HashSet<FileInfo>, target_files: &mut HashSet<FileInfo>) -> HashSet<FileInfo> {
+    fn mutual_files(
+        source_files: &mut HashSet<FileInfo>,
+        target_files: &mut HashSet<FileInfo>,
+    ) -> HashSet<FileInfo> {
         let intersection: HashSet<FileInfo> = source_files
             .iter()
             .filter_map(|file| target_files.take(file))
             .collect();
         source_files.retain(|file| !intersection.contains(&file));
-        intersection 
+        intersection
     }
 
     pub fn new(source: String, target: String) -> Plan {
-
         // Find all files in the source and target directories
         let mut source_files = FileInfo::from_dir(&source);
         let mut target_files = FileInfo::from_dir(&target);

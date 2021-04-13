@@ -1,16 +1,16 @@
-mod plan;
-mod file;
 mod diff;
+mod file;
 mod patch;
+mod plan;
 
-use plan::Plan;
 use patch::Patch;
+use plan::Plan;
 
 fn main() {
     let source = String::from("/home/dezyh/coding/patchup/cli/test/old");
     let target = String::from("/home/dezyh/coding/patchup/cli/test/new");
     let output = String::from("/home/dezyh/coding/patchup/cli/test/patch.up");
-    
+
     let plan = Plan::new(source.clone(), target.clone());
     plan.print();
 
