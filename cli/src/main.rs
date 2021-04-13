@@ -15,7 +15,7 @@ fn main() {
     plan.print();
 
     let patch = Patch::from_plan(plan);
-    patch.write_to_file(&output);
+    patch.write_file(&output);
 
     let patch = Patch::from_file(output);
     patch.apply(&source);
