@@ -11,14 +11,35 @@ pub struct Delta {
 }
 
 impl Delta {
-    pub fn calculate(file: String, source: &String, target: &String) -> Delta {
+    
+    fn idential(source: &Vec<u8>, target: &Vec<u8>) -> bool {
+        
+        // Check size of source and target is the same
+        if source.len() != target.len() {
+            return false
+        }
+
+        for i in 0..source.len() {
+            if source[i] != target[i] {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    pub fn calculate(file: String, source: &String, target: &String) -> Option<Delta> {
         // Read source and target file contents as bytes
         let source_contents = fs::read(format!("{}/{}", source, file)).unwrap();
         let target_contents = fs::read(format!("{}/{}", target, file)).unwrap();
-        // Calculate the patch diff
-        let (patch, size) = diff(source_contents, target_contents);
-        // Return patch
-        Delta { file, patch, size }
+
+        match Delta::idential(&source_contents, &target_contents) {
+            true => None,
+            false => {
+                let (patch, size) = diff(source_contents, target_contents);
+                Some(Delta { file, patch, size })
+            }
+        }
     }
 
     pub fn write_to_file(&self, file: &mut File) {

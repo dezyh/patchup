@@ -31,7 +31,11 @@ impl Patch {
 
         // Add the patch for each file in the directory
         for file in dirs.mutuals {
-            patch.deltas.push(Delta::calculate(file.path, &dirs.source, &dirs.target));
+            let delta = Delta::calculate(file.path, &dirs.source, &dirs.target);
+            match delta {
+                Some(delta) => patch.deltas.push(delta),
+                None => ()
+            }
         }
 
         for deletion in dirs.deletions {
