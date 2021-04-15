@@ -6,3 +6,8 @@ Cargo.lock
 **/*.rs.bk
 
 test/
+
+# Package
+PKGBUILD
+*.tar.gz
+*.zst

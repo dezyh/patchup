@@ -1,0 +1,44 @@
+name: cli
+
+on:
+  push:
+    paths:
+      - cli/**
+    branches: 
+      - master
+
+  pull_request:
+    paths:
+      - cli/**
+    branches: 
+      - master
+
+jobs:
+  cli:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./cli
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with: 
+          toolchain: stable
+
+      - name: Install Dependencies
+        run: cargo install cargo-aur
+
+      - name: Build
+        run: cargo build --release
+
+      - name: Generate PKGBUILD
+        run: cargo aur
+
+      - name: Publish to AUR
+        uses: KSXGitHub/github-actions-deploy-aur@v2.0.2
+        with:
+          pkgname: patchup
+          pkgbuild: ./PKGBUILD
+          commit_username: ${{ secrets.AUR_USERNAME }}
+          commit_email: ${{ secrets.AUR_EMAIL }}
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+

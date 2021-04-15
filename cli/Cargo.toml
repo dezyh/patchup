@@ -1,11 +1,15 @@
 [package]
 name = "patchup"
 version = "0.4.0"
-description = "A tool to compute binary patches for files and directories and apply them"
+description = "A tool to compute and apply binary patches for files and directories"
 license = "MIT"
 authors = ["Ben Mitchell <dezyh@outlook.com>"]
 edition = "2018"
-repository = "https://github.com/dezyh/patchup"
+repository = "https://github.com/dezyh/patchup/cli"
+readme = "https://github.com/dezyh/patchup/cli/readme.md"
+keywords = ["patch", "diff"]
+homepage = "https://github.com/dezyh/patchup/cli"
+
 
 [dependencies]
 bidiff = "1.0.0"
