@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - cli/**
+      - .github/workflows/cli.yml
     branches: 
       - master
 
