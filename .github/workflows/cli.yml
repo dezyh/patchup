@@ -31,11 +31,11 @@ jobs:
       - name: Build
         run: cargo build --release
 
-      - name: Cheeky LS
-        run: ls && find ./ -name PKGBUILD
-
       - name: Generate PKGBUILD
         run: cargo install cargo-aur && cargo aur
+        
+      - name: Cheeky LS
+        run: ls && find ./ -name PKGBUILD
 
       - name: Publish to AUR
         uses: KSXGitHub/github-actions-deploy-aur@v2.0.2
