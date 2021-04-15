@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="./assets/octopus.svg" width="150" />
+    <img src="../assets/octopus.svg" width="150" />
     <h1>PatchUp CLI</h1>
     <p>A cross-platform command line tool to generate and apply binary patches across files and directories.</p>
 </div>
