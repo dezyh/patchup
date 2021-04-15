@@ -15,25 +15,34 @@ jobs:
       run:
         working-directory: cli
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Rust Toolchain
+        uses: actions-rs/toolchain@v1
         with: 
+          profile: minimal
           toolchain: stable
 
-      - name: Install Dependencies
-        run: cargo install cargo-aur
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v1.2.0
 
       - name: Build
         run: cargo build --release
 
       - name: Generate PKGBUILD
+        run: cargo install cargo-aur
+        run: ls
+        run: ls ./
+        run: ls ./patchup
         run: cargo aur
 
       - name: Publish to AUR
         uses: KSXGitHub/github-actions-deploy-aur@v2.0.2
         with:
           pkgname: patchup
-          pkgbuild: ./PKGBUILD
+          pkgbuild: PKGBUILD
           commit_username: ${{ secrets.AUR_USERNAME }}
           commit_email: ${{ secrets.AUR_EMAIL }}
           ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
