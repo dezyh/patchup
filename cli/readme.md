@@ -16,12 +16,6 @@ To apply a given patch to a directory:
 patchup patch <source_directory> <patch_file>
 ```
 
-#### Plan Patch
-To show the directory plan for creating a patch file:
-```
-patchup plan <source_directory> <target_directory>
-```
-
 ## Installation
 
 #### Manual
