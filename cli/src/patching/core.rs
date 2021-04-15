@@ -5,6 +5,17 @@ use std::io::Read;
 use std::thread;
 
 pub fn diff(source: Vec<u8>, target: Vec<u8>) -> (Vec<u8>, usize) {
+
+    if source.len() == target.len() {
+        println!("MAYBE SAME");
+        for i in 0..source.len() {
+            if source[i] != target[i] {
+                println!("NOT SAME");
+                break
+            }
+        }
+    }
+
     // Calculate patch
     let (mut patch_reader, mut patch_writer) = pipe();
     thread::spawn(move || {
@@ -17,6 +28,8 @@ pub fn diff(source: Vec<u8>, target: Vec<u8>) -> (Vec<u8>, usize) {
 
     // Compress patch
     let com_patch = zstd::stream::encode_all(patch.as_slice(), 0).unwrap();
+
+    println!("raw={}, com={}", patch_size, com_patch.len());
 
     (com_patch, patch_size)
 }

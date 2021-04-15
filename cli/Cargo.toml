@@ -1,6 +1,6 @@
 [package]
 name = "patchup"
-version = "0.3.0"
+version = "0.4.0"
 description = "A tool to compute binary patches for files and directories and apply them"
 license = "MIT"
 authors = ["Ben Mitchell <dezyh@outlook.com>"]

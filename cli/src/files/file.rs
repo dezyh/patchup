@@ -3,15 +3,15 @@ use std::hash::{Hash, Hasher};
 use std::path::PathBuf;
 use walkdir::WalkDir;
 
-pub struct FileInfo {
+pub struct File {
     pub base: String,
     pub path: String,
 }
 
-impl FileInfo {
+impl File {
     // Parses a single file
-    pub fn from_file(base: &str, file: &PathBuf) -> FileInfo {
-        FileInfo {
+    pub fn from_file(base: &str, file: &PathBuf) -> File {
+        File {
             base: base.to_string(),
             path: file
                 .strip_prefix(base)
@@ -23,25 +23,25 @@ impl FileInfo {
     }
 
     // Parses all files in a directory
-    pub fn from_dir(dir: &str) -> HashSet<FileInfo> {
-        let files: HashSet<FileInfo> = WalkDir::new(&dir)
+    pub fn from_dir(dir: &str) -> HashSet<File> {
+        let files: HashSet<File> = WalkDir::new(&dir)
             .into_iter()
             .map(|entry| entry.unwrap().into_path())
             .filter(|path| path.is_file())
-            .map(|file| FileInfo::from_file(&dir, &file))
+            .map(|file| File::from_file(&dir, &file))
             .collect();
         files
     }
 }
 
-impl Hash for FileInfo {
+impl Hash for File {
     fn hash<H: Hasher>(&self, _state: &mut H) {}
 }
 
-impl PartialEq for FileInfo {
+impl PartialEq for File {
     fn eq(&self, other: &Self) -> bool {
         self.path == other.path
     }
 }
 
-impl Eq for FileInfo {}
+impl Eq for File {}

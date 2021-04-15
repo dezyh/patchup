@@ -1,8 +1,6 @@
-mod diff;
-mod file;
-mod patch;
-mod plan;
 mod cli;
+mod files;
+mod patching;
 
 use cli::Cli;
 
