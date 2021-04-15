@@ -1,5 +1,8 @@
-# Patchup
-A cross-platform command line tool to generate and apply binary diffs across files and directories.
+<div align="center">
+    <img src="./assets/octopus.svg" width="150" />
+    <h1>PatchUp CLI</h1>
+    <p>A cross-platform command line tool to generate and apply binary patches across files and directories.</p>
+</div>
 
 ## Usage
 Run using `patchup`. For more information, see `patchup --help`.
