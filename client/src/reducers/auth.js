@@ -13,7 +13,7 @@ const initialState = user
       pending: false,
       success: false,
       user: {},
-      token: '',
+      token: null,
     };
 
 const auth = (state = initialState, action) => {
@@ -23,7 +23,7 @@ const auth = (state = initialState, action) => {
         pending: true,
         success: false,
         user: {},
-        token: '',
+        token: null,
       };
     case LOGIN_SUCCESS:
       return {
@@ -37,7 +37,7 @@ const auth = (state = initialState, action) => {
         pending: false,
         success: false,
         user: {},
-        token: '',
+        token: null,
       };
 
     case SIGNUP_REQUEST:
@@ -45,7 +45,7 @@ const auth = (state = initialState, action) => {
         pending: true,
         success: false,
         user: {},
-        token: '',
+        token: null,
       };
 
     case SIGNUP_SUCCESS:
@@ -61,7 +61,7 @@ const auth = (state = initialState, action) => {
         pending: false,
         success: false,
         user: {},
-        token: '',
+        token: null,
       };
 
     case LOGOUT_SUCCESS:
@@ -69,7 +69,7 @@ const auth = (state = initialState, action) => {
         pending: false,
         success: false,
         user: {},
-        token: '',
+        token: null,
       };
 
     case LOGOUT_REQUEST:
