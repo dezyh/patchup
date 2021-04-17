@@ -47,6 +47,10 @@ jobs:
     needs:
       - build
 
+    defaults:
+      run:
+        working-directory: cli
+
     outputs:
       name: ${{ steps.metadata.outputs.name }}
       version: ${{ steps.metadata.outputs.version }}
