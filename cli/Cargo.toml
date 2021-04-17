@@ -1,28 +1,19 @@
 [package]
 name = "patchup"
-version = "0.4.0"
+version = "0.1.0"
 description = "A tool to compute and apply binary patches for files and directories"
 license = "MIT"
 authors = ["Ben Mitchell <dezyh@outlook.com>"]
 edition = "2018"
-repository = "https://github.com/dezyh/patchup/cli"
+repository = "https://github.com/dezyh/patchup"
 readme = "https://github.com/dezyh/patchup/cli/readme.md"
 keywords = ["patch", "diff"]
-homepage = "https://github.com/dezyh/patchup/cli"
-
 
 [dependencies]
 bidiff = "1.0.0"
 bipatch = "1.0.0"
 pipe = "0.4.0"
 byteorder = "1.4.3"
-integer-encoding = "3.0.2"
-hmac-sha256 = "0.1.7"
-size = "0.1.2"
-crossbeam-utils = "0.8.3"
 argh = "0.1.4"
-anyhow = "1.0.40"
-log = "0.4.14"
-env_logger = "0.8.3"
 walkdir = "2.3.2"
 zstd = "0.5"

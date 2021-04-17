@@ -1,0 +1,18 @@
+# Maintainer: MAINTAINER
+pkgname=NAME
+pkgver=VERSION
+pkgrel=1
+pkgdesc=DESCRIPTION
+url=URL
+license=LICENSE
+arch=("x86_64")
+makedepends=('cargo')
+provides=("NAME")
+
+build() {
+  cargo build --release --locked --all-features --target-dir=target
+}
+
+package() {
+  install -Dm 755 target/release/${pkgname} -t "${pkgname}/usr/bin"
+}
