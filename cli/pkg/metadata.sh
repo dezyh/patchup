@@ -8,4 +8,4 @@ echo "::set-output name=name::$name"
 echo "::set-output name=version::$version"
 echo "::set-output name=description::$description"
 echo "::set-output name=license::$license"
-echo "::set-output name=url::$url
+echo "::set-output name=url::$url"
