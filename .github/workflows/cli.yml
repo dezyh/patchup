@@ -69,14 +69,16 @@ jobs:
 
       - name: Upload Release Archive
         uses: svenstaro/upload-release-action@v2
-        with: repo_token: ${{ secrets.GITHUB_TOKEN }}
+        with: 
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: cli/patchup-cli.tar.gz 
           tag: ${{ steps.metadata.outputs.version }}
           overwrite: true
 
       - name: Upload Binary Release Archive
         uses: svenstaro/upload-release-action@v2
-        with: repo_token: ${{ secrets.GITHUB_TOKEN }}
+        with: 
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: cli/patchup-cli-bin.tar.gz 
           tag: ${{ steps.metadata.outputs.version }}
           overwrite: true
