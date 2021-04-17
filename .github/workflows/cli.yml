@@ -40,6 +40,12 @@ jobs:
       - name: Build
         run: cargo build --release --locked
 
+      - name: Store Build Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: patchup-binary
+          path: cli/target/release/patchup
+
   package:
     name: Package
     runs-on: ubuntu-latest
@@ -60,6 +66,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Load Build Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: patchup-binary
+          path: cli/target/release/patchup
 
       - name: Extract Metadata
         id: metadata
