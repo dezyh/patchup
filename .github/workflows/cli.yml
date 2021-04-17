@@ -41,7 +41,7 @@ jobs:
         run: cargo build --release --locked
 
       - name: Store Build Artifact
-        uses: actions/download-artifact@master
+        uses: actions/upload-artifact@master
         with:
           name: patchup-binary
           path: cli/target/release/patchup
