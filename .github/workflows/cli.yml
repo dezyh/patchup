@@ -1,38 +1,124 @@
-name: cli
+name: Patchup CLI
 
 on:
   push:
     paths:
       - cli/**
+      - .github/workflows/cli.yml
     branches: 
       - master
 
 jobs:
-  cli:
+
+  build:
+    name: Build
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./cli
+    
+    defaults:
+      run:
+        working-directory: cli
+    
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Rust Toolchain
+        uses: actions-rs/toolchain@v1
         with: 
+          profile: minimal
           toolchain: stable
 
-      - name: Install Dependencies
-        run: cargo install cargo-aur
+      - name: Rust Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Build
-        run: cargo build --release
+        run: cargo build --release --locked
 
-      - name: Generate PKGBUILD
-        run: cargo aur
+      - name: Store Build Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: patchup-binary
+          path: cli/target/release/patchup
 
-      - name: Publish to AUR
-        uses: KSXGitHub/github-actions-deploy-aur@v2.0.2
+  package:
+    name: Package
+    runs-on: ubuntu-latest
+    
+    needs:
+      - build
+
+    defaults:
+      run:
+        working-directory: cli
+
+    outputs:
+      name: ${{ steps.metadata.outputs.name }}
+      version: ${{ steps.metadata.outputs.version }}
+      description: ${{ steps.metadata.outputs.description }}
+      license: ${{ steps.metadata.outputs.license }}
+      url: ${{ steps.metadata.outputs.url }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Load Build Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: patchup-binary
+          path: cli/target/release/patchup
+
+      - name: Extract Metadata
+        id: metadata
+        run: ./package/metadata.sh 
+
+      - name: Create Release Archive
+        run: tar -czf patchup-cli.tar.gz Cargo.lock Cargo.toml src
+
+      - name: Create Binary Release Archive
+        run: tar -czf patchup-cli-bin.tar.gz target/release/patchup
+
+      - name: Upload Release Archive
+        uses: svenstaro/upload-release-action@v2
+        with: 
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: cli/patchup-cli.tar.gz 
+          tag: ${{ steps.metadata.outputs.version }}
+          overwrite: true
+
+      - name: Upload Binary Release Archive
+        uses: svenstaro/upload-release-action@v2
+        with: 
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: cli/patchup-cli-bin.tar.gz 
+          tag: ${{ steps.metadata.outputs.version }}
+          overwrite: true
+        
+      - name: Create Release PKGBUILD
+        run: ./package/pkgbuild.sh
+
+      - name: Create Release Binary PKGBUILD
+        run: ./package/pkgbuild.bin.sh
+
+      - name: Publish Release to AUR
+        uses: KSXGitHub/github-actions-deploy-aur@v2.2.3
         with:
           pkgname: patchup
-          pkgbuild: ./PKGBUILD
+          pkgbuild: ./cli/PKGBUILD
           commit_username: ${{ secrets.AUR_USERNAME }}
           commit_email: ${{ secrets.AUR_EMAIL }}
           ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
 
+      - name: Publish Release Binary to AUR
+        uses: KSXGitHub/github-actions-deploy-aur@v2.2.3
+        with:
+          pkgname: patchup-bin
+          pkgbuild: ./cli/PKGBUILD-BIN
+          commit_username: ${{ secrets.AUR_USERNAME }}
+          commit_email: ${{ secrets.AUR_EMAIL }}
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
