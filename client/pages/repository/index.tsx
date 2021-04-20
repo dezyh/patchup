@@ -60,7 +60,7 @@ const Repository = () => {
   return (
     <Center mt={4}>
 
-  <Tabs minWidth='70vw' maxWidth='1200'>
+      <Tabs minWidth='70vw' maxWidth='1200'>
         <TabList>
           <Tab>Overview</Tab>
           <Tab>Patches</Tab>
