@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react'
 
-const OctopusLogo = (props) => {
+const OctopusLogo = (props: any) => {
   return (
     <Box
       as='svg'

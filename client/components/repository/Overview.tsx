@@ -42,7 +42,7 @@ const VersionsTable = ({ versions }) => {
   )
 }
 
-const Versions = ({ versions }) => {
+const CurrentVersions = ({ versions }) => {
   return (
     <Card>
       <Stack direction='column'>
@@ -88,17 +88,17 @@ const Builds = ({ builds }) => {
 
 const Overview = ({ data }) => {
   return (
-    <Grid gap={4} templateColumns='repeat(12, 1fr)'>
+    <Grid gap={4} templateColumns='repeat(2, 1fr)'>
 
-      <GridItem colSpan={12} rowSpan={1}>
+      <GridItem colSpan={2}>
         <Header header={data.header} />
       </GridItem>
 
-      <GridItem colSpan={6} rowSpan={2}>
-        <Versions versions={data.versions} />
+      <GridItem colSpan={[2,2,1,1]}>
+        <CurrentVersions versions={data.versions} />
       </GridItem>
 
-      <GridItem colSpan={6} rowSpan={2}>
+      <GridItem colSpan={[2,2,1,1]}>
         <Builds builds={data.builds} />
       </GridItem>
 

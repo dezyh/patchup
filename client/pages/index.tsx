@@ -15,7 +15,7 @@ const Main = () => {
           <Heading>Patchup</Heading>
         </Center>
         <Text>A cloud service to create and distribute binary patches.</Text>
-        
+
         <Stack pt={3} direction='row'>
           <Link href='/signup'>
             <Button colorScheme='blue'>Get Started</Button>

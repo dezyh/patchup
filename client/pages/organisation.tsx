@@ -1,5 +1,6 @@
-import { Stack, Text, Center } from '@chakra-ui/react'
+import { Box, HStack, Stack, Text, Center } from '@chakra-ui/react'
 import { Tab, Tabs, TabPanel, TabPanels, TabList } from '@chakra-ui/react'
+import { Header, Activity, Members, Settings, Repositories } from '@/components/organisation'
 
 const organisation = {
   name: 'Patchup',
@@ -16,22 +17,14 @@ const organisation = {
     {
       name: 'Service',
       id: 'service',
+      owner: 'patchup',
+      updated: 'a year ago',
+      downloads: '10K+',
+      visibility: 'Public',
     }
   ],
   activity: [
   ],
-}
-
-const Header = ({ organisation }) => {
-  return (
-    <Stack justifyContent='center' justifyItems='center' minHeight={150} minWidth={1200} direction='column'>
-      <Text fontSize='lg' fontWeight='bold'>{organisation.name}</Text>
-      <Stack direction='row'>
-        <Text>{organisation.id}</Text>
-        <Text>{organisation.joined}</Text>
-      </Stack>
-    </Stack>
-  )
 }
 
 const Organisation = () => {
@@ -40,7 +33,7 @@ const Organisation = () => {
       <Stack direction='column'>
         <Header organisation={organisation} />
 
-        <Tabs minWidth='70vw' maxWidth='1200'>
+        <Tabs width='95vw' maxWidth='800'>
           <TabList>
             <Tab>Repositories</Tab>
             <Tab>Members</Tab>
@@ -50,16 +43,16 @@ const Organisation = () => {
 
           <TabPanels>
             <TabPanel>
-              <p>Todo</p>
+              <Repositories repositories={organisation.repositories}/>
             </TabPanel>
             <TabPanel>
-              <p>Todo</p>
+              <Members members={organisation.members}/>
             </TabPanel>
             <TabPanel>
-              <p>Todo</p>
+              <Activity />
             </TabPanel>
             <TabPanel>
-              <p>Todo</p>
+              <Settings />
             </TabPanel>
           </TabPanels>
         </Tabs>
