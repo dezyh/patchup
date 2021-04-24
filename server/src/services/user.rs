@@ -14,9 +14,14 @@ pub struct TokenBodyResponse {
     pub token_type: String,
 }
 
-pub fn signup(user: UserSignup, pool: &web::Data<Pool>) -> Result<String, ServiceError> {
+pub fn signup(user: UserSignup, pool: &web::Data<Pool>) -> Result<TokenBodyResponse, ServiceError> {
     match User::signup(user, &pool.get().unwrap()) {
-        Ok(message) => Ok(message),
+        Ok(signed_in_user) => {
+            match serde_json::from_value(json!({ "token": Token::generate(signed_in_user), "token_type": "bearer" })) {
+                Ok(token) => Ok(token),
+                Err(_) => Err(ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, constants::SIGN_IN_FAILURE.to_string()))
+            }
+        },
         Err(message) => Err(ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, message))
     }
 }
