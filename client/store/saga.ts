@@ -1,5 +1,8 @@
 import { all } from 'redux-saga/effects'
+import UserSaga from './user/sagas'
 
-export const rootSaga = function* root() {
-  yield all([])
+export default function* saga() {
+  yield all([
+    UserSaga(),
+  ])
 }
