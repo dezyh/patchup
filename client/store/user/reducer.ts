@@ -1,11 +1,5 @@
 import {ActionType} from "./types"
-
-const initialState = {
-  requesting: false,
-  successful: false,
-  error: '',
-  token: '',
-}
+import { initialState } from './types'
 
 const reducer = (state=initialState, action) => {
   switch (action.type) {
@@ -47,7 +41,7 @@ const reducer = (state=initialState, action) => {
         requesting: false,
         successful: true,
         error: '',
-        token: '',
+        token: action.token,
       }
 
     case ActionType.SIGN_UP_FAILURE:

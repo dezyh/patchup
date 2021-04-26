@@ -20,7 +20,7 @@ const Main = () => {
           <Link href='/signup'>
             <Button colorScheme='blue'>Get Started</Button>
           </Link>
-          <Button>GitHub</Button>
+          <Button to='https://github.com/dezyh/patchup'>GitHub</Button>
         </Stack>
 
       </Stack>

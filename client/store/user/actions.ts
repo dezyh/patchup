@@ -33,4 +33,10 @@ const signUpSuccess = (token) => {
   }
 }
 
-export { signInRequest, signUpRequest, signUpSuccess, signInSuccess }
+const signOutRequest = () => {
+  return {
+    type: ActionType.SIGN_OUT_REQUEST,
+  }
+}
+
+export { signOutRequest, signInRequest, signUpRequest, signUpSuccess, signInSuccess }
