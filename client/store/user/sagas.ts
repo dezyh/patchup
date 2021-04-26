@@ -10,9 +10,8 @@ function* signout() {
 function* signinFlow(username: string, password: string) {
   let token
   try {
-    token = yield call(signin, username, password)
-    console.log(token)
-    yield put(signInSuccess(token)) 
+    const response = yield call(signin, username, password)
+    yield put(signInSuccess(response.data.token)) 
 
   } catch (error) {
     yield put({ type: ActionType.SIGN_IN_FAILURE })
@@ -28,11 +27,17 @@ function* signinFlow(username: string, password: string) {
 
 function* signinWatcher() {
   while (true) {
+    // Sign the user in when they make the request
     const { username, password } = yield take(ActionType.SIGN_IN_REQUEST)
     const task = yield fork(signinFlow, username, password)
-    const action = yield take([ActionType.SIGN_IN_SUCCESS, ActionType.SIGN_IN_FAILURE])
-    if (action.type === ActionType.SIGN_OUT_REQUEST) yield cancel(task)
-    yield call(signout)
+
+    // Look for any signout actions
+    const action = yield take([ActionType.SIGN_OUT_REQUEST, ActionType.SIGN_IN_FAILURE])
+    if (action.type === ActionType.SIGN_OUT_REQUEST) {
+      yield cancel(task)
+    } else {
+      yield call(signout)
+    }
   }
 }
 
