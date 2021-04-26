@@ -9,6 +9,8 @@ services:
         - ./client:/client:cached
     ports:
         - 3000:3000
+    environment:
+      CLIENT_ENV: development
     stdin_open: true
     working_dir: /client
     container_name: patchup-client
