@@ -66,3 +66,4 @@ const reducer = (state=initialState, action) => {
 }
 
 export default reducer 
+export type UserState = ReturnType<typeof reducer>
