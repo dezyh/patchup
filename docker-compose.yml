@@ -3,12 +3,14 @@ version: '3'
 services:
 
   client:
-    image: node:13.12.0-alpine
-    command: sh -c 'npm install --silent && npm start'
+    image: node:alpine
+    command: sh -c 'yarn install && yarn dev'
     volumes:
         - ./client:/client:cached
     ports:
         - 3000:3000
+    environment:
+      CLIENT_ENV: development
     stdin_open: true
     working_dir: /client
     container_name: patchup-client
@@ -21,7 +23,7 @@ services:
     volumes:
         - ./server:/server:cached
     ports:
-        - 8000:8000
+        - 8080:8080
     environment:
       DATABASE_URL: postgres://postgres:postgres@database:5432/postgres
     container_name: patchup-server

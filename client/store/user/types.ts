@@ -1,0 +1,18 @@
+export enum ActionType {
+  SIGN_IN_REQUEST = 'SIGN_IN_REQUEST',
+  SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS',
+  SIGN_IN_FAILURE = 'SIGN_IN_FAILURE',
+  SIGN_UP_REQUEST = 'SIGN_UP_REQUEST',
+  SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS',
+  SIGN_UP_FAILURE = 'SIGN_UP_FAILURE',
+  SIGN_OUT_REQUEST = 'SIGN_OUT_REQUEST',
+  SIGN_OUT_SUCCESS = 'SIGN_OUT_SUCCESS',
+  SIGN_OUT_FAILURE = 'SIGN_OUT_FAILURE',
+}
+
+export const initialState = {
+  requesting: false,
+  successful: false,
+  error: '',
+  token: '',
+}

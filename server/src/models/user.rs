@@ -44,17 +44,37 @@ pub struct UserSignup {
     pub lastname: String,
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct UserSignUpResponse {
+    pub session: String,
+}
+
 impl User {
 
-    pub fn signup(signup: UserSignup, conn: &Connection) -> Result<String, String> {
+    pub fn signup(signup: UserSignup, conn: &Connection) -> Result<UserSigninResponse, String> {
         if User::find_by_username(&signup.username, conn).is_err() {
+            // Create a hash of the password and create a user with that hash
             let hash = auth::hash_password(&signup.password);
-            let user = UserSignup {
-                password: hash,
-                ..signup
-            };
+            let user = UserSignup { password: hash, ..signup };
+            // Insert the user into the database
             diesel::insert_into(users).values(&user).execute(conn).unwrap();
-            Ok(constants::SIGN_UP_SUCCESS.to_string())
+            // Find the user in the database
+            if let Ok(user) = users
+                .filter(username.eq(&user.username))
+                .get_result::<User>(conn)
+            {
+                // Create a session for the new user
+                let new_session = User::create_session();
+                if User::store_session(&user.username, &new_session, conn) {
+                    return Ok(UserSigninResponse {
+                        username: user.username,
+                        email: user.email,
+                        session: new_session,
+                    })
+                }
+                return Err(String::from("Couldn't create a new session"))
+            }
+            return Err(String::from("Couldn't create a new user in database"))
         } else {
             Err(format!("User {} is already registered", &signup.username))
         }
