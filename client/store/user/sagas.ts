@@ -1,4 +1,5 @@
 import { take, fork, cancel, call, put, cancelled } from 'redux-saga/effects'
+import Router from 'next/router'
 import { signin, signup } from './api'
 import { ActionType } from './types'
 import { signInSuccess } from './actions'
@@ -11,7 +12,12 @@ function* signinFlow(username: string, password: string) {
   let token
   try {
     const response = yield call(signin, username, password)
-    yield put(signInSuccess(response.data.token)) 
+
+    if (response.data) {
+      yield put(signInSuccess(response.data.token)) 
+    } else {
+      yield put({ type: ActionType.SIGN_IN_FAILURE })
+    }
 
   } catch (error) {
     yield put({ type: ActionType.SIGN_IN_FAILURE })
@@ -32,11 +38,11 @@ function* signinWatcher() {
     const task = yield fork(signinFlow, username, password)
 
     // Look for any signout actions
-    const action = yield take([ActionType.SIGN_OUT_REQUEST, ActionType.SIGN_IN_FAILURE])
+    const action = yield take([ActionType.SIGN_OUT_REQUEST, ActionType.SIGN_IN_FAILURE, ActionType.SIGN_IN_SUCCESS])
     if (action.type === ActionType.SIGN_OUT_REQUEST) {
       yield cancel(task)
-    } else {
-      yield call(signout)
+    } else if (action.type === ActionType.SIGN_IN_SUCCESS) {
+      yield call(Router.push, '/')
     }
   }
 }
