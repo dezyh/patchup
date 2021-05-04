@@ -1,9 +1,9 @@
 use crate::models::response::ResponseBody;
-use actix_web::{HttpResponse, http::StatusCode};
+use actix_web::{http::StatusCode, HttpResponse};
 
 pub struct ServiceError {
-  pub http_status: StatusCode,
-  pub body: ResponseBody<String>,
+    pub http_status: StatusCode,
+    pub body: ResponseBody<String>,
 }
 
 impl ServiceError {
@@ -13,7 +13,7 @@ impl ServiceError {
             body: ResponseBody {
                 message,
                 data: String::new(),
-            }
+            },
         }
     }
 

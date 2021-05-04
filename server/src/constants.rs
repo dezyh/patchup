@@ -5,9 +5,6 @@ pub const SIGN_UP_FAILURE: &str = "Sign up failure";
 
 pub const SIGN_OUT_TOKEN_ERROR: &str = "Sign out token error";
 
-
-
-
 // Messages
 pub const MESSAGE_OK: &str = "ok";
 pub const MESSAGE_CAN_NOT_FETCH_DATA: &str = "Can not fetch data";

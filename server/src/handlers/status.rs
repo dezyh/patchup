@@ -1,6 +1,5 @@
 use actix_web::HttpResponse;
 
-#[get("/status")]
-fn get_status() -> HttpResponse {
+pub fn status() -> HttpResponse {
     HttpResponse::Ok().body("alive".to_string())
 }

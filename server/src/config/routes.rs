@@ -1,16 +1,15 @@
-use crate::handlers::*;
-use actix_web::web;
+use crate::handlers::{status, user};
+use actix_web::web::{get, post, resource, scope, ServiceConfig};
 
-pub fn config_routes(cfg: &mut web::ServiceConfig) {
-    info!("Configuring routes...");
+pub fn config_routes(cfg: &mut ServiceConfig) {
     cfg.service(
-        web::scope("/api")
-            .service(status::get_status)
+        scope("/api")
+            .service(resource("status").route(get().to(status::status)))
             .service(
-                web::scope("/user")
-                    .service(web::resource("/signup").route(web::post().to(user::post_signup)))
-                    .service(web::resource("/signin").route(web::post().to(user::signin)))
-                    .service(web::resource("/signout").route(web::post().to(user::signout)))
-            )
+                scope("/user")
+                    .service(resource("/signup").route(post().to(user::signup)))
+                    .service(resource("/signin").route(post().to(user::signin)))
+                    .service(resource("/signout").route(post().to(user::signout))),
+            ),
     );
 }

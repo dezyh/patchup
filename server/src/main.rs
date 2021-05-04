@@ -1,31 +1,24 @@
 #![allow(dead_code)]
 
 #[macro_use]
-extern crate actix_web;
-#[macro_use]
 extern crate diesel;
 #[macro_use]
 extern crate diesel_migrations;
 #[macro_use]
 extern crate log;
-#[macro_use]
-extern crate serde_json;
-
-extern crate uuid;
-extern crate jsonwebtoken;
 
 use actix_web::{middleware::Logger, App, HttpServer};
 use std::{env, io};
 
-mod error;
 mod config;
+mod constants;
+mod error;
 mod handlers;
 mod models;
 mod schema;
 mod services;
-mod constants;
 
-#[actix_rt::main]
+#[actix_web::main]
 async fn main() -> io::Result<()> {
     dotenv::dotenv().expect("Couldn't find .env file");
     env_logger::init();
