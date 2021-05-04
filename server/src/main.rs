@@ -11,9 +11,6 @@ extern crate log;
 #[macro_use]
 extern crate serde_json;
 
-extern crate uuid;
-extern crate jsonwebtoken;
-
 use actix_web::{middleware::Logger, App, HttpServer};
 use std::{env, io};
 
