@@ -1,15 +1,11 @@
 #![allow(dead_code)]
 
 #[macro_use]
-extern crate actix_web;
-#[macro_use]
 extern crate diesel;
 #[macro_use]
 extern crate diesel_migrations;
 #[macro_use]
 extern crate log;
-#[macro_use]
-extern crate serde_json;
 
 use actix_web::{middleware::Logger, App, HttpServer};
 use std::{env, io};
