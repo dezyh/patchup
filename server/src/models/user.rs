@@ -1,11 +1,11 @@
 use crate::{
-    services::auth,
     config::db::Connection,
-    schema::users::{self, dsl::*},
     models::token::Token,
+    schema::users::{self, dsl::*},
+    services::auth,
 };
-use serde::{Deserialize, Serialize};
 use diesel::prelude::*;
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 #[derive(Debug, Serialize, Deserialize, Queryable)]
@@ -27,7 +27,7 @@ pub struct UserSignin {
 }
 
 #[derive(Serialize, Deserialize, Insertable)]
-#[table_name="users"]
+#[table_name = "users"]
 pub struct UserSignup {
     pub username: String,
     pub email: String,
@@ -44,7 +44,6 @@ pub struct UserResponse {
 }
 
 impl User {
-
     /// Signs up a new user by querying the database to check if either username or password is
     /// already used. Then the plain text password is hashed and a user session is created and
     /// stored in the database.
@@ -93,11 +92,11 @@ impl User {
                             }),
                             false => None,
                         }
-                    },
-                    false => None
+                    }
+                    false => None,
                 }
-            },
-            Err(_) => None
+            }
+            Err(_) => None,
         }
     }
 
@@ -117,9 +116,7 @@ impl User {
 
     /// Finds a user by their email address
     pub fn find_by_email(_email: &str, conn: &Connection) -> QueryResult<User> {
-        users
-            .filter(email.eq(_email))
-            .get_result::<User>(conn)
+        users.filter(email.eq(_email)).get_result::<User>(conn)
     }
 
     /// Finds a user by any identifier (username or email address)
@@ -135,20 +132,18 @@ impl User {
         Uuid::new_v4().to_simple().to_string()
     }
 
-    /// Stores a user session in the database 
+    /// Stores a user session in the database
     pub fn store_session(_username: &str, _session: &str, conn: &Connection) -> bool {
         match User::find_by_username(_username, conn) {
-            Ok(user) => {
-                diesel::update(users.find(user.id))
-                    .set(session.eq(_session.to_string()))
-                    .execute(conn)
-                    .is_ok()
-            },
+            Ok(user) => diesel::update(users.find(user.id))
+                .set(session.eq(_session.to_string()))
+                .execute(conn)
+                .is_ok(),
             Err(_) => false,
         }
     }
 
-    /// Validates a token by ensuring the username and user session match in the database 
+    /// Validates a token by ensuring the username and user session match in the database
     pub fn validate_session(token: &Token, conn: &Connection) -> bool {
         users
             .filter(username.eq(&token.user))

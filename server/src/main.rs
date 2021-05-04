@@ -10,13 +10,13 @@ extern crate log;
 use actix_web::{middleware::Logger, App, HttpServer};
 use std::{env, io};
 
-mod error;
 mod config;
+mod constants;
+mod error;
 mod handlers;
 mod models;
 mod schema;
 mod services;
-mod constants;
 
 #[actix_rt::main]
 async fn main() -> io::Result<()> {

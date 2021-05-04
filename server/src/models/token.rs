@@ -1,14 +1,14 @@
-use actix_web::web;
-use jsonwebtoken::{EncodingKey,Header,DecodingKey, TokenData, Validation};
-use chrono::Utc;
-use serde::{Deserialize, Serialize};
 use crate::{
     config::db::Pool,
     models::user::{User, UserResponse},
 };
+use actix_web::web;
+use chrono::Utc;
+use jsonwebtoken::{DecodingKey, EncodingKey, Header, TokenData, Validation};
+use serde::{Deserialize, Serialize};
 
 pub static KEY: [u8; 16] = *include_bytes!("../secret.key");
-static ONE_WEEK: i64 = 60*60*24*7;
+static ONE_WEEK: i64 = 60 * 60 * 24 * 7;
 static NANOSECONDS: i64 = 1_000_000_000;
 
 #[derive(Serialize, Deserialize)]
@@ -16,7 +16,7 @@ pub struct Token {
     // issued at
     pub iat: i64,
     // expiration
-    pub exp: i64, 
+    pub exp: i64,
     // data
     pub user: String,
     pub session: String,
@@ -29,7 +29,6 @@ pub struct TokenJson {
 }
 
 impl Token {
-    
     pub fn generate(signin: UserResponse) -> String {
         let now = Utc::now().timestamp_nanos() / NANOSECONDS;
         let payload = Token {
@@ -38,28 +37,39 @@ impl Token {
             user: signin.username,
             session: signin.session,
         };
-        jsonwebtoken::encode(&Header::default(), &payload, &EncodingKey::from_secret(&KEY)).unwrap()
+        jsonwebtoken::encode(
+            &Header::default(),
+            &payload,
+            &EncodingKey::from_secret(&KEY),
+        )
+        .unwrap()
     }
 
     pub fn generate_json(signin: UserResponse) -> TokenJson {
         let token = Token::generate(signin);
         TokenJson {
             token,
-            token_type: "bearer".to_string()
+            token_type: "bearer".to_string(),
         }
     }
 
     pub fn decode(token: String) -> jsonwebtoken::errors::Result<TokenData<Token>> {
-        jsonwebtoken::decode::<Token>(&token, &DecodingKey::from_secret(&KEY), &Validation::default())
+        jsonwebtoken::decode::<Token>(
+            &token,
+            &DecodingKey::from_secret(&KEY),
+            &Validation::default(),
+        )
     }
 
-    pub fn decode_auth_header(auth: &str) -> Result<jsonwebtoken::errors::Result<TokenData<Token>>, String> {
+    pub fn decode_auth_header(
+        auth: &str,
+    ) -> Result<jsonwebtoken::errors::Result<TokenData<Token>>, String> {
         match auth.starts_with("bearer") {
             true => {
                 let token = auth[6..auth.len()].trim();
                 Ok(Token::decode(token.to_string()))
-            },
-            false => Err("Invalid auth header".to_string())
+            }
+            false => Err("Invalid auth header".to_string()),
         }
     }
 
@@ -71,7 +81,7 @@ impl Token {
     pub fn verify(token_data: &TokenData<Token>, pool: &web::Data<Pool>) -> Result<String, String> {
         match User::validate_session(&token_data.claims, &pool.get().unwrap()) {
             true => Ok(token_data.claims.user.to_string()),
-            false => Err("Invalid token".to_string())
+            false => Err("Invalid token".to_string()),
         }
     }
 }

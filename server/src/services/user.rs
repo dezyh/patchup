@@ -1,11 +1,14 @@
-use actix_web::{web, http::{StatusCode, header::HeaderValue}};
+use actix_web::{
+    http::{header::HeaderValue, StatusCode},
+    web,
+};
 
 use crate::{
-    constants,
     config::db::Pool,
+    constants,
     error::ServiceError,
-    models::user::{User,UserSignup,UserSignin},
-    models::token::{Token,TokenJson},
+    models::token::{Token, TokenJson},
+    models::user::{User, UserSignin, UserSignup},
 };
 
 /// Verify a given JWT is valid and return the corrosponding user from the database
@@ -16,7 +19,7 @@ pub fn verify(auth_header: &HeaderValue, pool: &web::Data<Pool>) -> Result<User,
             if let Ok(data) = Token::decode(token.to_string()) {
                 if let Ok(username) = Token::verify(&data, pool) {
                     if let Ok(user) = User::find_by_username(&username, &pool.get().unwrap()) {
-                        return Ok(user)
+                        return Ok(user);
                     }
                 }
             }
@@ -29,7 +32,10 @@ pub fn verify(auth_header: &HeaderValue, pool: &web::Data<Pool>) -> Result<User,
 pub fn signup(user: UserSignup, pool: &web::Data<Pool>) -> Result<TokenJson, ServiceError> {
     match User::signup(user, &pool.get().unwrap()) {
         Ok(user) => Ok(Token::generate_json(user)),
-        Err(message) => Err(ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, message))
+        Err(message) => Err(ServiceError::new(
+            StatusCode::INTERNAL_SERVER_ERROR,
+            message,
+        )),
     }
 }
 
@@ -37,7 +43,10 @@ pub fn signup(user: UserSignup, pool: &web::Data<Pool>) -> Result<TokenJson, Ser
 pub fn signin(user: UserSignin, pool: &web::Data<Pool>) -> Result<TokenJson, ServiceError> {
     match User::signin(user, &pool.get().unwrap()) {
         Some(user) => Ok(Token::generate_json(user)),
-        None => Err(ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, constants::SIGN_IN_FAILURE.to_string()))
+        None => Err(ServiceError::new(
+            StatusCode::INTERNAL_SERVER_ERROR,
+            constants::SIGN_IN_FAILURE.to_string(),
+        )),
     }
 }
 
@@ -47,7 +56,10 @@ pub fn signout(auth_header: &HeaderValue, pool: &web::Data<Pool>) -> Result<(), 
         Ok(user) => {
             User::signout(user.id, &pool.get().unwrap());
             Ok(())
-        },
-        Err(_) => Err(ServiceError::new(StatusCode::INTERNAL_SERVER_ERROR, constants::SIGN_OUT_TOKEN_ERROR.to_string()))
+        }
+        Err(_) => Err(ServiceError::new(
+            StatusCode::INTERNAL_SERVER_ERROR,
+            constants::SIGN_OUT_TOKEN_ERROR.to_string(),
+        )),
     }
 }
