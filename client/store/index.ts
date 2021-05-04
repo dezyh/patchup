@@ -2,12 +2,10 @@ import { createStore, applyMiddleware } from 'redux'
 import { useMemo } from 'react'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import createSagaMiddleware from 'redux-saga'
-import { persistStore, persistReducer } from 'redux-persist'
 import rootSaga from './saga'
 import { initialState as userState } from './user/types'
 import { combineReducers } from 'redux'
 import user from './user/reducer' 
-import storage from 'redux-persist/lib/storage'
 
 let store
 

@@ -1,0 +1,13 @@
+name: patchup
+
+static_sites:
+  - name: patchup-client
+    source_dir: client
+    build_command: next export
+    output_dir: build
+    environment_slug: node-js
+    github:
+      repo: dezyh/patchup
+      branch: master
+      deploy_on_push: true
+      
