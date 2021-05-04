@@ -14,7 +14,7 @@ use crate::{
 /// Verify a given JWT is valid and return the corrosponding user from the database
 pub fn verify(auth_header: &HeaderValue, pool: &web::Data<Pool>) -> Result<User, ()> {
     if let Ok(auth) = auth_header.to_str() {
-        if auth.starts_with("bearer") {
+        if auth.starts_with("Bearer") {
             let token = auth[6..auth.len()].trim();
             if let Ok(data) = Token::decode(token.to_string()) {
                 if let Ok(username) = Token::verify(&data, pool) {
