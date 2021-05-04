@@ -18,7 +18,7 @@ mod models;
 mod schema;
 mod services;
 
-#[actix_rt::main]
+#[actix_web::main]
 async fn main() -> io::Result<()> {
     dotenv::dotenv().expect("Couldn't find .env file");
     env_logger::init();
