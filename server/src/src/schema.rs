@@ -1,8 +1,8 @@
 table! {
     orgs (id) {
         id -> Int4,
-        tag -> Varchar,
-        name -> Varchar,
+        tag -> Nullable<Varchar>,
+        name -> Nullable<Varchar>,
     }
 }
 
@@ -17,13 +17,13 @@ table! {
 table! {
     patches (id) {
         id -> Int4,
-        repo -> Int4,
-        created -> Timestamp,
-        downloads -> Int4,
+        repo -> Nullable<Int4>,
+        created -> Nullable<Date>,
+        downloads -> Nullable<Int4>,
         bytesize -> Nullable<Int4>,
         platform -> Nullable<Varchar>,
-        source_version -> Varchar,
-        target_version -> Varchar,
+        source_version -> Nullable<Varchar>,
+        target_version -> Nullable<Varchar>,
         data -> Nullable<Varchar>,
     }
 }
@@ -31,10 +31,10 @@ table! {
 table! {
     repos (id) {
         id -> Int4,
-        creator -> Int4,
+        creator -> Nullable<Int4>,
         manager -> Nullable<Int4>,
-        created -> Timestamp,
-        description -> Varchar,
+        created -> Nullable<Date>,
+        description -> Nullable<Varchar>,
     }
 }
 
